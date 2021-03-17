@@ -32,7 +32,7 @@
 /build/
 
 # Web related
-Helper/generated_plugin_registrant.dart
+App/generated_plugin_registrant.dart
 
 # Symbolication related
 app.*.symbols

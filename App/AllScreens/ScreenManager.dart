@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../Utils/AppColors.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -16,7 +17,7 @@ class _ScreenManagerState extends State<ScreenManager> {
   @override
   Widget build(BuildContext context) {
     return Container(
-
+      color: appColor,
     );
   }
 }
