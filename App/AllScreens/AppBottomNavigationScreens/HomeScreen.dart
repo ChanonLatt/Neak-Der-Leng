@@ -25,7 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
     height = MediaQuery.of(context).size.height;
 
     List <Widget> slivers = [
-      _buildHeaderSlider(),
+      // _buildHeaderSlider(),
+      _buildImageSlider(),
       _addSpace(16.0),
       _buildHeaderTitle("Most Popular Places"),
       _addSpace(16.0),
@@ -101,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
               spreadRadius: 1
           )],
           image: DecorationImage(
-              image: AssetImage("App/Utils/Assets/sample_place.png"),
+              image: AssetImage("App/Utils/Assets/sample_place.jpeg"),
               fit: BoxFit.cover
           )
       ),
@@ -146,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
-                    color: appColor.withOpacity(0.6)
+                    color: appGray2.withOpacity(0.6)
                 ),
                 child: Row(
                   children: [
@@ -279,6 +280,27 @@ class _HomeScreenState extends State<HomeScreen> {
         text: TextSpan(text: text, style: style), maxLines: 1, textDirection: TextDirection.ltr)
       ..layout(minWidth: 0, maxWidth: double.infinity);
     return textPainter.size;
+  }
+
+  _buildImageSlider() {
+    return SliverToBoxAdapter(
+      child: Container(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        decoration: BoxDecoration(
+          color: appColor,
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
+        ),
+        height: 270.0,
+        child: PageView(
+          children: [
+            Image.asset("App/Utils/Assets/banner.jpeg", fit: BoxFit.cover,),
+            Image.asset("App/Utils/Assets/sample_place.jpeg", fit: BoxFit.cover,),
+            Image.asset("App/Utils/Assets/banner.jpeg", fit: BoxFit.cover,),
+            Image.asset("App/Utils/Assets/sample_place.jpeg", fit: BoxFit.cover,)
+          ],
+        )
+      ),
+    );
   }
 
 }
