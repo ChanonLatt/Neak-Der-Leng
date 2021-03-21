@@ -58,6 +58,10 @@ flutter:
     - App/Utils/Assets/saved_outline.png
     - App/Utils/Assets/saved_filled.png
     - App/Utils/Assets/sample_place.png
+    - App/Utils/Assets/distance.png
+    - App/Utils/Assets/favorite_filled.png
+    - App/Utils/Assets/favorite_outline.png
+    - App/Utils/Assets/location_icon.png
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

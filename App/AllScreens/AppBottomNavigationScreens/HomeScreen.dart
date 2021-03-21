@@ -36,12 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   _addSpace(double space) => SliverToBoxAdapter(child: SizedBox(height: space));
+
   _buildHeaderSlider() => SliverToBoxAdapter(
       child: Container(
         height: 300,
         color: appColor,
       ),
       );
+
   _buildHeaderTitle(String text) => SliverToBoxAdapter(
     child: Container(
       padding: appPadding,
@@ -71,30 +73,89 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     ),
   );
-  _buildHorizontalListViewCell() => Container(
-    margin: EdgeInsets.only(right: 16.0),
-    width: 312.0,
-    height: 190.0,
-    decoration: BoxDecoration(
-      color: appWhite,
-      borderRadius: BorderRadius.circular(15.0),
-      boxShadow: [BoxShadow(
-          color: appBlack.withOpacity(0.2),
-          offset: Offset(0, 4),
-          blurRadius: 4,
-          spreadRadius: 1
-        )],
-      image: DecorationImage(
-        image: AssetImage("App/Utils/Assets/sample_place.png"),
-        fit: BoxFit.cover
-      )
-    ),
 
-    child: Stack(
-      children: [
+  _buildHorizontalListViewCell() {
+    double stackChildrenMargin = 10.0;
+    return Container(
+      margin: EdgeInsets.only(right: 16.0),
+      width: 312.0,
+      height: 190.0,
+      decoration: BoxDecoration(
+          color: appWhite,
+          borderRadius: BorderRadius.circular(15.0),
+          boxShadow: [BoxShadow(
+              color: appBlack.withOpacity(0.2),
+              offset: Offset(0, 4),
+              blurRadius: 4,
+              spreadRadius: 1
+          )],
+          image: DecorationImage(
+              image: AssetImage("App/Utils/Assets/sample_place.png"),
+              fit: BoxFit.cover
+          )
+      ),
 
-      ],
-    ),
+      child: Stack(
+        children: [
+          Positioned(
+              top: stackChildrenMargin,
+              left: stackChildrenMargin,
+              width: 26.0,
+              height: 26.0,
+              child: Image.asset("App/Utils/Assets/favorite_filled.png")
+          ), /// favorite icon
+          Positioned(
+              top: stackChildrenMargin,
+              right: stackChildrenMargin,
+              height: 30,
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: appGray3.withOpacity(0.6)
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(width: 8.0),
+                    Image.asset("App/Utils/Assets/distance.png", width: 16.0, height: 16.0,),
+                    SizedBox(width: 8.0),
+                    Text("30 Km", style: TextStyle(
+                        color: appWhite,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold
+                    )),
+                    SizedBox(width: 8.0),
+                  ],
+                ),
+              )
+          ), /// distance
+          Positioned(
+              left: stackChildrenMargin,
+              bottom: stackChildrenMargin,
+              height: 30,
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8.0),
+                    color: appColor.withOpacity(0.6)
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(width: 8.0),
+                    Image.asset("App/Utils/Assets/location_icon.png", width: 12.0, height: 16.0,),
+                    SizedBox(width: 8.0),
+                    Text("Fresh beautiful sea, Keb", style: TextStyle(
+                        color: appWhite,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.bold
+                    ),),
+                    SizedBox(width: 8.0),
+                  ],
+                ),
+              )
+          ) /// address name
+        ],
+      ),
+    );
+  }
 
-  );
+
 }
