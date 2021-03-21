@@ -49,6 +49,7 @@ class _ScreenManagerState extends State<ScreenManager> {
     }
 
   }
+
   get _buildBottomNavigationItems {
     const double iconSize = 24.0;
     return BottomNavigationBar(
@@ -56,7 +57,7 @@ class _ScreenManagerState extends State<ScreenManager> {
       onTap: (int index) {
         setState(() {
           _currentBottomNavigationIndex = index;
-          _pageControl.animateToPage(index, duration: Duration(milliseconds: 100), curve: Curves.bounceInOut);
+          _pageControl.animateToPage(index, duration: Duration(milliseconds: 1), curve: Curves.bounceInOut);
         });
       },
       selectedItemColor: appColor,
@@ -89,6 +90,7 @@ class _ScreenManagerState extends State<ScreenManager> {
   get _buildBodyPageView {
     return Container(
       child: PageView(
+        physics: NeverScrollableScrollPhysics(),
         scrollDirection: Axis.horizontal,
         controller: _pageControl,
         children: [

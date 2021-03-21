@@ -11,25 +11,36 @@ class _HomeScreenState extends State<HomeScreen> {
   EdgeInsets appPadding = EdgeInsets.fromLTRB(16.0, 0, 0, 0);
   double width;
   double height;
+  List <PlaceCategory> _placeCategories = [
+    PlaceCategory("Mountain", "mountain", true),
+    PlaceCategory("Sea", "sea", false),
+    PlaceCategory("Island", "island", false),
+    PlaceCategory("Temple", "temple", false),
+    PlaceCategory("Forest", "forest", false)
+  ];
 
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
+
+    List <Widget> slivers = [
+      _buildHeaderSlider(),
+      _addSpace(16.0),
+      _buildHeaderTitle("Most Popular Places"),
+      _addSpace(16.0),
+      _buildHorizontalListView(),
+      _addSpace(32.0),
+      _buildHeaderTitle("All Categories"),
+      _addSpace(16.0),
+      _buildHorizontalListCategories()
+    ];
+
+    List <Widget> itemsByCategory = _getPlacesByCategory();
+
     return Container(
       child: CustomScrollView(
-
-        slivers: [
-          _buildHeaderSlider(),
-          _addSpace(16.0),
-          _buildHeaderTitle("Most Popular Places"),
-          _addSpace(16.0),
-          _buildHorizontalListView(),
-          _addSpace(32.0),
-          _buildHeaderTitle("All Categories")
-
-
-        ],
+        slivers: slivers + itemsByCategory
       ),
     );
   }
@@ -157,5 +168,124 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  _buildHorizontalListCategories() {
+    return SliverToBoxAdapter(
+      child: Container(
+        margin: EdgeInsets.only(left: 16.0),
+        height: 60.0,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+            itemCount: _placeCategories.length,
+            itemBuilder: (context, index) => _buildCategoriesItemCell(index)
+        ),
+      ),
+    );
+}
 
+  _buildCategoriesItemCell(int index) {
+    PlaceCategory category = _placeCategories[index];
+    TextStyle style = TextStyle(
+        color: category.isSelected ? appColor : appGray3,
+        fontSize: 14.0,
+        fontWeight: FontWeight.bold
+    );
+    Size textSize = _getTextSize(category.text, style);
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _placeCategories.asMap().forEach((placeIndex, place) {
+            placeIndex == index ? (place.isSelected = true) : (place.isSelected = false);
+          });
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.fromLTRB(0, 0, 20.0, 20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              category.text,
+              textAlign: TextAlign.center,
+              style: style
+            ),
+            SizedBox(height: 8.0),
+            Opacity(
+              opacity: category.isSelected ? 1 : 0,
+              child: Container(
+                height: 4.0,
+                width: textSize.width * 0.6,
+                decoration: BoxDecoration(
+                  color: category.isSelected ? appColor : appGray3,
+                  borderRadius: BorderRadius.circular(4.0)
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+}
+
+  _getPlacesByCategory() {
+    const margin = EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0);
+    return [
+      SliverToBoxAdapter(
+        child: Container(
+          margin: margin,
+          height: 245.0,
+          color: appColor,
+        ),
+      ),
+      SliverToBoxAdapter(
+        child: Container(
+          margin: margin,
+          height: 245.0,
+          color: appColor,
+        ),
+      ),
+      SliverToBoxAdapter(
+        child: Container(
+          margin: margin,
+          height: 245.0,
+          color: appColor,
+        ),
+      ),
+      SliverToBoxAdapter(
+        child: Container(
+          margin: margin,
+          height: 245.0,
+          color: appColor,
+        ),
+      ),
+      SliverToBoxAdapter(
+        child: Container(
+          margin: margin,
+          height: 245.0,
+          color: appColor,
+        ),
+      ),
+      SliverToBoxAdapter(
+        child: Container(
+          margin: margin,
+          height: 245.0,
+          color: appColor,
+        ),
+      ),
+    ];
+  }
+
+  Size _getTextSize(String text, TextStyle style) {
+    final TextPainter textPainter = TextPainter(
+        text: TextSpan(text: text, style: style), maxLines: 1, textDirection: TextDirection.ltr)
+      ..layout(minWidth: 0, maxWidth: double.infinity);
+    return textPainter.size;
+  }
+
+}
+
+class PlaceCategory {
+  String text;
+  String value;
+  bool isSelected;
+  PlaceCategory(this.text, this.value, this.isSelected);
 }
