@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../Utils/AppColors.dart';
@@ -25,8 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     height = MediaQuery.of(context).size.height;
 
     List <Widget> slivers = [
-      // _buildHeaderSlider(),
-      _buildImageSlider(),
+      _buildSliderAndSearchBar(),
       _addSpace(16.0),
       _buildHeaderTitle("Most Popular Places"),
       _addSpace(16.0),
@@ -49,12 +49,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _addSpace(double space) => SliverToBoxAdapter(child: SizedBox(height: space));
 
-  _buildHeaderSlider() => SliverToBoxAdapter(
+  _buildSliderAndSearchBar() {
+    return SliverToBoxAdapter(
       child: Container(
         height: 300,
-        color: appColor,
+        // color: appColor.withOpacity(0.1),
+        child: Stack(
+          children: [
+            _buildImageSlider([]),
+            _buildSearchBar()
+          ],
+        ),
       ),
-      );
+    );
+  }
 
   _buildHeaderTitle(String text) => SliverToBoxAdapter(
     child: Container(
@@ -195,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {
         setState(() {
           _placeCategories.asMap().forEach((placeIndex, place) {
-            placeIndex == index ? (place.isSelected = true) : (place.isSelected = false);
+            placeIndex == index ? place.isSelected = true : place.isSelected = false;
           });
         });
       },
@@ -282,23 +290,102 @@ class _HomeScreenState extends State<HomeScreen> {
     return textPainter.size;
   }
 
-  _buildImageSlider() {
-    return SliverToBoxAdapter(
-      child: Container(
+  _buildImageSlider(List<Image> images, {double gradientH = 60}) {
+    return Container(
         clipBehavior: Clip.antiAliasWithSaveLayer,
         decoration: BoxDecoration(
           color: appColor,
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30.0), bottomRight: Radius.circular(30.0)),
         ),
         height: 270.0,
-        child: PageView(
+        child: Stack(
           children: [
-            Image.asset("App/Utils/Assets/banner.jpeg", fit: BoxFit.cover,),
-            Image.asset("App/Utils/Assets/sample_place.jpeg", fit: BoxFit.cover,),
-            Image.asset("App/Utils/Assets/banner.jpeg", fit: BoxFit.cover,),
-            Image.asset("App/Utils/Assets/sample_place.jpeg", fit: BoxFit.cover,)
+            PageView(
+              children: [
+                Image.asset("App/Utils/Assets/banner.jpeg", fit: BoxFit.cover,),
+                Image.asset("App/Utils/Assets/sample_place.jpeg", fit: BoxFit.cover,),
+                Image.asset("App/Utils/Assets/banner.jpeg", fit: BoxFit.cover,),
+                Image.asset("App/Utils/Assets/sample_place.jpeg", fit: BoxFit.cover,)
+              ],
+            ), /// slider view
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: gradientH,
+              child: Container(
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [appBlack.withOpacity(0), appBlack.withOpacity(0.5)]
+                    )
+                ),
+              ),
+            ), /// shadow view
+            Positioned(
+                left: 0,
+                right: 0,
+                bottom: gradientH * 0.5,
+                child: Center(
+                  child: Container(
+                    height: 20.0,
+                    width: 50,
+                    alignment: Alignment.center,
+                    child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,//images.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.all(3),
+                            height: 6.0,
+                            width: 6.0,
+                            decoration: BoxDecoration(
+                                color: appWhite,
+                                shape: BoxShape.circle
+                            ),
+                          ); /// icon indicator
+                        }
+                    ),
+                  ),
+                )
+            ) /// indicator view
           ],
         )
+    );
+  }
+
+  _buildSearchBar() {
+    return Positioned(
+      left: 26.0,
+      right: 26.0,
+      bottom: 0,
+      child: Container(
+        height: 50.0,
+        decoration: BoxDecoration(
+            color: appWhite,
+          boxShadow: [
+            BoxShadow(
+              color: appBlack.withOpacity(0.2),
+              offset: Offset(0, 1),
+              blurRadius: 4,
+              spreadRadius: 0.5
+            )
+          ],
+          borderRadius: BorderRadius.circular(16.0)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
+          child: TextField(
+            decoration: InputDecoration(
+              suffixIcon: IconButton(icon: Image.asset("App/Utils/Assets/Search.png", width: 20,)),
+              hintStyle: TextStyle(fontWeight: FontWeight.bold, color: appGray3),
+              border: InputBorder.none,
+              hintText: "Where do you want to go ?",
+            ),
+          ),
+        ),
       ),
     );
   }

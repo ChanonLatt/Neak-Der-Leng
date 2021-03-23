@@ -63,6 +63,7 @@ flutter:
     - App/Utils/Assets/favorite_outline.png
     - App/Utils/Assets/location_icon.png
     - App/Utils/Assets/banner.jpeg
+    - App/Utils/Assets/Search.png
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
